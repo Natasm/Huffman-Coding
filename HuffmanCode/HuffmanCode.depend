@@ -1,0 +1,47 @@
+# depslib dependency file v1.0
+1590761102 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\main.c
+
+1590793971 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\code_huffman.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"Node.h"
+	"PriorityQueue.h"
+	"LinkedList.h"
+	"File.h"
+
+1590785664 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\node.h
+
+1590764553 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\nodefreqsort.h
+
+1590785657 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\node.c
+	<stdlib.h>
+	"Node.h"
+
+1590764541 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\nodefreqsort.c
+	<stdlib.h>
+	"NodeFreqSort.h"
+
+1590768856 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\priorityqueue.h
+
+1590785330 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\priorityqueue.c
+	"PriorityQueue.h"
+	<stdlib.h>
+
+1590776451 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\linkedlist.c
+	"LinkedList.h"
+	<stdlib.h>
+
+1590776286 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\linkedlist.h
+
+1590790664 source:c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\file.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
+1590788785 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\code_huffman.h
+	"LinkedList.h"
+
+1590790059 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\file.h
+
