@@ -126,7 +126,7 @@ LinkedList updateLinkedList(LinkedList ll, char key, void* content)
 
 LinkedList insertBeginningLinkedList(LinkedList ll, char key, void* content)
 {
-	LinkedList new = newNode(key, content);
+	LinkedList new = newNodeLinkedList(key, content);
 
 	new->next = ll;
 
@@ -222,7 +222,7 @@ void deleteLinkedList(LinkedList ll)
 
 void toString(LinkedList ll){
     while(ll != NULL){
-        printf("%c - %d\n", ll->key,(int) ll->content);
+        printf("%c - %s\n", (char*) ll->key, ll->content);
         ll = ll->next;
     }
 }

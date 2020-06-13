@@ -14,7 +14,7 @@ void clearBuffer(){
    if(n == 0) return;
 
    if(n > 0) buffer <<= (8 - n);
-   fwrite(&buffer,sizeof(int),1,pont_arq);
+   fwrite(&buffer,sizeof(char),1,pont_arq);
 
    buffer = 0;
    n = 0;
@@ -30,7 +30,7 @@ void writeBit(bool bit){
 
 void writeByte(int x){
      if(n == 0){
-        fwrite(&buffer,sizeof(int),1,pont_arq);
+        fwrite(&buffer,1,sizeof(int),pont_arq);
         return;
      }
      for(int i = 0; i < 8; i++){

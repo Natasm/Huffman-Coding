@@ -43,10 +43,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Node.h" />
-		<Unit filename="NodeFreqSort.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="NodeFreqSort.h" />
 		<Unit filename="PriorityQueue.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -55,9 +51,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="code_huffman.h" />
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
