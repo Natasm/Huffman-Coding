@@ -7,8 +7,15 @@
 #include "LinkedList.h"
 #include "File.h"
 
-LinkedList count_freq(char* buffer, int size_buffer, LinkedList ll){
-    for(int i = 0; i < size_buffer; i++) ll = updateLinkedList(ll, buffer[i], 1);
+char tabel[256][100];
+int k = 0;
+
+LinkedList count_freq(FILE* input, LinkedList ll){
+    int ch = getc(input);
+    while(ch != EOF){
+        ll = updateLinkedList(ll, ch, 1);
+        ch = getc(input);
+    }
     return ll;
 }
 
@@ -45,16 +52,10 @@ char* concatChar(char* c1, char* c2){
     return c1;
 }
 
-LinkedList tabel;
-
-char aux[1000][1000];
-int k = 0;
-
 void build_code(Node x, char* string, int goToParent){
     if(isLeaf(x)){
-        strcpy(aux[k], string);
-        tabel = insertBeginningLinkedList(tabel, getKeyNode(x), aux[k]);
-        k++;
+        printf("%c - %s\n", getKeyNode(x), string);
+        strcpy(tabel[getKeyNode(x)], string);
         if(goToParent) string[(strlen(string) - 1) - 1] = '\0';
         else string[strlen(string) - 1] = '\0';
         return;
@@ -76,14 +77,17 @@ void writeTrie(Node x){
      writeTrie(getRightNode(x));
 }
 
-void writeText(char* buffer, LinkedList tabel){
-   for(int i = 0; i < strlen(buffer); i++){
-       char c = buffer[i];
-       char* code_binary = getContentLinkedList(searchLinkedList(tabel, c));
+void writeText(FILE* input){
+   int ch =  getc(input);
+
+    while(ch != EOF){
+       char* code_binary = tabel[ch];
+
        for(int j = 0; j < strlen(code_binary); j++){
            if(code_binary[j] == '0') writeBit(false);
            else if(code_binary[j] == '1') writeBit(true);
        }
+       ch = getc(input);
    }
 }
 
@@ -100,44 +104,47 @@ void print_code(Node x, char* string, int goToParent){
     if(goToParent) string[(strlen(string) - 1)] = '\0';
 }
 
-void huffman_compress(char* buffer){
+void huffman_compress(char* input, char* output){
+    FILE* file_input = fopen(input, "rt");
+
+    fseek(file_input, 0L, SEEK_END);
+
+    int sizeBuffer = ftell(file_input) / 10;
+    char buffer[sizeBuffer];
+
+    rewind(file_input);
+
+    fread(&buffer, sizeof(char), sizeBuffer, file_input);
+
+    rewind(file_input);
+
     LinkedList ll = newLinkedList();
-    ll = count_freq(buffer, strlen(buffer), ll);
+    ll = count_freq(file_input, ll);
+
+    rewind(file_input);
 
     PriorityQueue pq = build_priority_queue(ll);
 
     Node parent = build_trie(pq);
 
-    //toString(ll);
-    //Node x = getRightNode(getLeftNode(getLeftNode(parent)));
-    //if(x != NULL) printf("%c - %d\n", getKeyNode(x), getFrequence(x));
-    char a[1000];
-    //toString(ll);
+    deletePriorityQueue(pq);
+    deleteLinkedList(ll);
+
+    char a[10000];
     //print_code(parent, a, false);
     build_code(parent, a, false);
-    toString(tabel);
 
-    //printf("-> %c", getKeyLinkedList(getNextNodeLinkedList(tabel)));
-    //toString(tabel);
-
-    create_or_open_file("test_huffman.dat");
+    create_or_open_file(output);
     writeTrie(parent);
-    writeByte(strlen(buffer));
-    writeText(buffer, tabel);
+    writeByte(sizeBuffer);
+    writeText(file_input);
     close_file();
+
+    fclose(file_input);
 }
 
 int main(){
-    FILE* file = fopen("text_arithmetic_big.txt", "rt");
-    fseek(file, 0L, SEEK_END);
-    int sizeBuffer = ftell(file);
-    char buffer[sizeBuffer];
-    rewind(file);
-
-    fread(&buffer, sizeof(char), sizeBuffer, file);
-    close_file();
-
-    huffman_compress(buffer);
+    huffman_compress("text_arithmetic_big.txt", "text_arithmetic_big.dat");
     return 0;
 }
 
