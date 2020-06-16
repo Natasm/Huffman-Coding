@@ -5,26 +5,38 @@
 #include "Node.h"
 #include "PriorityQueue.h"
 #include "LinkedList.h"
+#include "NodeFreq.h"
+#include "Tabel.h"
 #include "File.h"
 
-char tabel[256][100];
-int k = 0;
+#define SIZE_ALPHABETIC 256
 
-LinkedList count_freq(FILE* input, LinkedList ll){
+NodeFreq nodesfreq[SIZE_ALPHABETIC];
+int nodesfreqValid = 0;
+
+Tabel tabel[SIZE_ALPHABETIC];
+
+void count_freq(FILE* input){
     int ch = getc(input);
+
     while(ch != EOF){
-        ll = updateLinkedList(ll, ch, 1);
+        if(nodesfreq[ch] == NULL) {
+                nodesfreq[ch] = newNodeFreq(ch, 1);
+                nodesfreqValid++;
+        }
+        else nodesfreq[ch] = addContentNodeFreq(nodesfreq[ch], 1);
+
         ch = getc(input);
     }
-    return ll;
 }
 
-PriorityQueue build_priority_queue(LinkedList ll){
-    PriorityQueue pq = newPriorityQueue(sizeLinkedList(ll));
-    while(ll != NULL){
-        Node node = newNode(getKeyLinkedList(ll), getContentLinkedList(ll), NULL, NULL);
-        insertPriorityQueue(pq, getFrequence(node),node);
-        ll = getNextNodeLinkedList(ll);
+PriorityQueue build_priority_queue(){
+    PriorityQueue pq = newPriorityQueue(nodesfreqValid);
+    for(int i = 0; i < SIZE_ALPHABETIC; i++){
+        if(nodesfreq[i] != NULL){
+            Node node = newNode(getKeyNode(nodesfreq[i]), getContentNodeFreq(nodesfreq[i]), NULL, NULL);
+            insertPriorityQueue(pq, getContentNodeFreq(nodesfreq[i]), node);
+        }
     }
     return pq;
 }
@@ -54,8 +66,8 @@ char* concatChar(char* c1, char* c2){
 
 void build_code(Node x, char* string, int goToParent){
     if(isLeaf(x)){
-        printf("%c - %s\n", getKeyNode(x), string);
-        strcpy(tabel[getKeyNode(x)], string);
+        char key = getKeyNode(x);
+        if(tabel[key] == NULL) tabel[key] = newTabel(key, string);
         if(goToParent) string[(strlen(string) - 1) - 1] = '\0';
         else string[strlen(string) - 1] = '\0';
         return;
@@ -81,7 +93,7 @@ void writeText(FILE* input){
    int ch =  getc(input);
 
     while(ch != EOF){
-       char* code_binary = tabel[ch];
+       char* code_binary = getContentTabel(tabel[ch]);
 
        for(int j = 0; j < strlen(code_binary); j++){
            if(code_binary[j] == '0') writeBit(false);
@@ -106,40 +118,31 @@ void print_code(Node x, char* string, int goToParent){
 
 void huffman_compress(char* input, char* output){
     FILE* file_input = fopen(input, "rt");
-
     fseek(file_input, 0L, SEEK_END);
-
-    int sizeBuffer = ftell(file_input) / 10;
-    char buffer[sizeBuffer];
+    int sizeBuffer = ftell(file_input);
 
     rewind(file_input);
 
-    fread(&buffer, sizeof(char), sizeBuffer, file_input);
+    count_freq(file_input);
 
-    rewind(file_input);
-
-    LinkedList ll = newLinkedList();
-    ll = count_freq(file_input, ll);
-
-    rewind(file_input);
-
-    PriorityQueue pq = build_priority_queue(ll);
+    PriorityQueue pq = build_priority_queue();
 
     Node parent = build_trie(pq);
 
     deletePriorityQueue(pq);
-    deleteLinkedList(ll);
 
-    char a[10000];
-    //print_code(parent, a, false);
+    char a[100];
     build_code(parent, a, false);
 
     create_or_open_file(output);
-    writeTrie(parent);
-    writeByte(sizeBuffer);
-    writeText(file_input);
-    close_file();
 
+    writeTrie(parent);
+    writeByte(nodesfreqValid);
+
+    rewind(file_input);
+    writeText(file_input);
+
+    close_file();
     fclose(file_input);
 }
 

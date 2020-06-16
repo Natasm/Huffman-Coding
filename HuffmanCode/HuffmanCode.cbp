@@ -43,10 +43,18 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Node.h" />
+		<Unit filename="NodeFreq.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="NodeFreq.h" />
 		<Unit filename="PriorityQueue.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="PriorityQueue.h" />
+		<Unit filename="Tabel.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Tabel.h" />
 		<Unit filename="code_huffman.c">
 			<Option compilerVar="CC" />
 		</Unit>
