@@ -30,13 +30,20 @@ void writeBit(bool bit){
 
 void writeByte(int x){
      if(n == 0){
-        fwrite(&buffer,1,sizeof(int),pont_arq);
+        fwrite(&x,1,sizeof(char),pont_arq);
         return;
      }
      for(int i = 0; i < 8; i++){
          bool bit = ((x >> (8 - i - 1)) & 1) == 1;
          writeBit(bit);
      }
+}
+
+void writeInt(int x){
+   writeByte((x >> 24) & 0xff);
+   writeByte((x >> 16) & 0xff);
+   writeByte((x >> 8) & 0xff);
+   writeByte((x >> 0) & 0xff);
 }
 
 void writeChar(char c){

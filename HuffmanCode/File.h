@@ -7,6 +7,8 @@ void writeBit(bool bit);
 
 void writeChar(char c);
 
+void writeInt(int i);
+
 void close_file();
 
 #endif // FILE_H_INCLUDED

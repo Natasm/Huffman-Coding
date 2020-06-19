@@ -137,7 +137,7 @@ void huffman_compress(char* input, char* output){
     create_or_open_file(output);
 
     writeTrie(parent);
-    writeByte(nodesfreqValid);
+    writeInt(nodesfreqValid);
 
     rewind(file_input);
     writeText(file_input);
@@ -147,7 +147,7 @@ void huffman_compress(char* input, char* output){
 }
 
 int main(){
-    huffman_compress("text_arithmetic_big.txt", "text_arithmetic_big.dat");
+    huffman_compress("The_Bible.txt", "text_arithmetic_big.dat");
     return 0;
 }
 
