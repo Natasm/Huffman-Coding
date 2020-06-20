@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include "Node.h"
 #include "PriorityQueue.h"
-#include "LinkedList.h"
 #include "NodeFreq.h"
 #include "Tabel.h"
 #include "File.h"
@@ -78,26 +77,26 @@ void build_code(Node x, char* string, int goToParent){
     if(goToParent) string[(strlen(string) - 1)] = '\0';
 }
 
-void writeTrie(Node x){
+void writeTrie(Node x, FileStream fs){
      if(isLeaf(x)){
-        writeBit(true);
-        writeChar(getKeyNode(x));
+        writeBit(fs, true);
+        writeChar(fs, getKeyNode(x));
         return;
      }
-     writeBit(false);
-     writeTrie(getLeftNode(x));
-     writeTrie(getRightNode(x));
+     writeBit(fs, false);
+     writeTrie(getLeftNode(x), fs);
+     writeTrie(getRightNode(x), fs);
 }
 
-void writeText(FILE* input){
+void writeText(FILE* input, FileStream fs){
    int ch =  getc(input);
 
     while(ch != EOF){
        char* code_binary = getContentTabel(tabel[ch]);
 
        for(int j = 0; j < strlen(code_binary); j++){
-           if(code_binary[j] == '0') writeBit(false);
-           else if(code_binary[j] == '1') writeBit(true);
+           if(code_binary[j] == '0') writeBit(fs, false);
+           else if(code_binary[j] == '1') writeBit(fs, true);
        }
        ch = getc(input);
    }
@@ -134,15 +133,15 @@ void huffman_compress(char* input, char* output){
     char a[100];
     build_code(parent, a, false);
 
-    create_or_open_file(output);
+    FileStream fs = create_or_open_file(output, "wb");
 
-    writeTrie(parent);
-    writeInt(nodesfreqValid);
+    writeTrie(parent, fs);
+    writeInt(fs, nodesfreqValid);
 
     rewind(file_input);
-    writeText(file_input);
+    writeText(file_input, fs);
 
-    close_file();
+    close_file(fs, "wb");
     fclose(file_input);
 }
 

@@ -1,14 +1,23 @@
 #ifndef FILE_H_INCLUDED
 #define FILE_H_INCLUDED
+#include <stdbool.h>
 
-void create_or_open_file(char* path);
+typedef struct filestream* FileStream;
 
-void writeBit(bool bit);
+FileStream create_or_open_file(char* path, char* mode);
 
-void writeChar(char c);
+void writeBit(FileStream fs, bool bit);
 
-void writeInt(int i);
+void writeChar(FileStream fs, char c);
 
-void close_file();
+void writeInt(FileStream fs, int i);
+
+int readChar(FileStream fs);
+
+int readInt(FileStream fs);
+
+bool readBit(FileStream fs);
+
+void close_file(FileStream fs, char* mode);
 
 #endif // FILE_H_INCLUDED

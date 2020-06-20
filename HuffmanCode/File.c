@@ -1,55 +1,118 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include "File.h"
 
-FILE* pont_arq;
-static int buffer = 0;
-static int n = 0;
+struct filestream{
+    FILE* pont_arq;
+    int buffer;
+    int n;
+};
 
-void create_or_open_file(char* path){
-    pont_arq = fopen(path, "a");
+FileStream create_or_open_file(char* path, char* mode){
+    FileStream fs = malloc(sizeof(struct filestream));
+
+    fs->buffer = 0;
+    fs->n = 0;
+    fs->pont_arq = fopen(path, mode);
+
+    return fs;
 }
 
-void clearBuffer(){
-   if(n == 0) return;
+//Start functions of write of file binary
 
-   if(n > 0) buffer <<= (8 - n);
-   fwrite(&buffer,sizeof(char),1,pont_arq);
+void clearBuffer(FileStream fs){
+   if(fs->n == 0) return;
 
-   buffer = 0;
-   n = 0;
+   if(fs->n > 0) fs->buffer <<= (8 - fs->n);
+   fwrite(&fs->buffer, sizeof(char),1,fs->pont_arq);
+
+   fs->buffer = 0;
+   fs->n = 0;
 }
 
-void writeBit(bool bit){
-    buffer <<= 1;
-    if(bit) buffer |= 1;
+void writeBit(FileStream fs, bool bit){
+    fs->buffer <<= 1;
+    if(bit) fs->buffer |= 1;
 
-    n++;
-    if(n == 8) clearBuffer();
+    fs->n++;
+    if(fs->n == 8) clearBuffer(fs);
 }
 
-void writeByte(int x){
-     if(n == 0){
-        fwrite(&x,1,sizeof(char),pont_arq);
+void writeByte(FileStream fs, int x){
+     if(fs->n == 0){
+        fwrite(&x,sizeof(char),1, fs->pont_arq);
         return;
      }
+
      for(int i = 0; i < 8; i++){
          bool bit = ((x >> (8 - i - 1)) & 1) == 1;
-         writeBit(bit);
+         writeBit(fs, bit);
      }
 }
 
-void writeInt(int x){
-   writeByte((x >> 24) & 0xff);
-   writeByte((x >> 16) & 0xff);
-   writeByte((x >> 8) & 0xff);
-   writeByte((x >> 0) & 0xff);
+void writeInt(FileStream fs, int x){
+    writeByte(fs, (x >> 24) & 0xff);
+    writeByte(fs, (x >> 16) & 0xff);
+    writeByte(fs, (x >> 8) & 0xff);
+    writeByte(fs, (x >> 0) & 0xff);
 }
 
-void writeChar(char c){
-    writeByte(c);
+void writeChar(FileStream fs, char c){
+    writeByte(fs, c);
 }
 
-void close_file(){
-    if(pont_arq != NULL) fclose(pont_arq);
+//End functions of write of file binary
+
+//Start functions of read of file binary
+
+void fillBuffer(FileStream fs){
+    fs->buffer = fgetc(fs->pont_arq);
+    fs->n = 8;
+}
+
+int readChar(FileStream fs){
+    if(fs->n == 8){
+        int x = fs->buffer;
+        fillBuffer(fs);
+        return x;
+    }
+
+    int x = fs->buffer;
+    x <<= (8 - fs->n);
+    int cache = fs->n;
+
+    fillBuffer(fs);
+
+    fs->n = cache;
+    x |= (fs->buffer >> fs->n);
+
+    return x;
+}
+
+int readInt(FileStream fs){
+    int x = 0;
+    for(int i = 0; i < 4; i++){
+        int c = readChar(fs);
+        x <<= 8;
+        x |= c;
+    }
+    return x;
+}
+
+bool readBit(FileStream fs){
+    fs->n--;
+    bool x = ((fs->buffer >> fs->n) & 1) == 1;
+
+    if(fs->n == 0) fillBuffer(fs);
+
+    return x;
+}
+
+//Close file
+
+void close_file(FileStream fs, char* mode){
+    if(strcmp(mode, "wb") == 0) clearBuffer(fs);
+    if(fs->pont_arq != NULL) fclose(fs->pont_arq);
 }

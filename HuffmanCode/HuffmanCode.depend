@@ -45,10 +45,12 @@
 
 1590790059 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\file.h
 
-1592056925 source:c:\users\natandemorais\huffman-coding\huffmancode\file.c
+1592662493 source:c:\users\natandemorais\huffman-coding\huffmancode\file.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
+	<string.h>
+	"File.h"
 
 1592582211 source:c:\users\natandemorais\huffman-coding\huffmancode\linkedlist.c
 	"LinkedList.h"
@@ -68,19 +70,19 @@
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\priorityqueue.h
 
-1592338662 source:c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.c
+1592662679 source:c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	"Node.h"
 	"PriorityQueue.h"
-	"LinkedList.h"
 	"NodeFreq.h"
 	"Tabel.h"
 	"File.h"
 
-1592331337 c:\users\natandemorais\huffman-coding\huffmancode\file.h
+1592661872 c:\users\natandemorais\huffman-coding\huffmancode\file.h
+	<stdbool.h>
 
 1592582211 source:c:\users\natandemorais\huffman-coding\huffmancode\nodefreq.c
 	<stdlib.h>

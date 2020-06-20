@@ -35,10 +35,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="File.h" />
-		<Unit filename="LinkedList.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="LinkedList.h" />
 		<Unit filename="Node.c">
 			<Option compilerVar="CC" />
 		</Unit>
