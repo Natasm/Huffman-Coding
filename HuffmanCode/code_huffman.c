@@ -7,34 +7,26 @@
 #include "NodeFreq.h"
 #include "Tabel.h"
 #include "File.h"
+#include "HuffmanConfig.h"
 
 #define SIZE_ALPHABETIC 256
 
-NodeFreq nodesfreq[SIZE_ALPHABETIC];
-int nodesfreqValid = 0;
+void count_freq(CodeHuffman ch, FILE* input){
+    int c = getc(input);
 
-Tabel tabel[SIZE_ALPHABETIC];
-
-void count_freq(FILE* input){
-    int ch = getc(input);
-
-    while(ch != EOF){
-        if(nodesfreq[ch] == NULL) {
-                nodesfreq[ch] = newNodeFreq(ch, 1);
-                nodesfreqValid++;
-        }
-        else nodesfreq[ch] = addContentNodeFreq(nodesfreq[ch], 1);
-
-        ch = getc(input);
+    while(c != EOF){
+        insertNodeFreq(ch, c);
+        c = getc(input);
     }
 }
 
-PriorityQueue build_priority_queue(){
-    PriorityQueue pq = newPriorityQueue(nodesfreqValid);
+PriorityQueue build_priority_queue(CodeHuffman ch){
+    PriorityQueue pq = newPriorityQueue(getNodeFreqValid(ch));
     for(int i = 0; i < SIZE_ALPHABETIC; i++){
-        if(nodesfreq[i] != NULL){
-            Node node = newNode(getKeyNode(nodesfreq[i]), getContentNodeFreq(nodesfreq[i]), NULL, NULL);
-            insertPriorityQueue(pq, getContentNodeFreq(nodesfreq[i]), node);
+        NodeFreq nodefreq = getNodeFreq(ch, i);
+        if(nodefreq != NULL){
+            Node node = newNode(getKeyNodeFreq(nodefreq), getContentNodeFreq(nodefreq), NULL, NULL);
+            insertPriorityQueue(pq, getContentNodeFreq(nodefreq), node);
         }
     }
     return pq;
@@ -63,16 +55,17 @@ char* concatChar(char* c1, char* c2){
     return c1;
 }
 
-void build_code(Node x, char* string, int goToParent){
+void build_code(Node x, char* string, int goToParent, CodeHuffman ch){
     if(isLeaf(x)){
         char key = getKeyNode(x);
-        if(tabel[key] == NULL) tabel[key] = newTabel(key, string);
+        insertTabel(ch, key, string);
+
         if(goToParent) string[(strlen(string) - 1) - 1] = '\0';
         else string[strlen(string) - 1] = '\0';
         return;
     }
-    build_code(getLeftNode(x), concatChar(string, "0"), false);
-    build_code(getRightNode(x), concatChar(string, "1"), true);
+    build_code(getLeftNode(x), concatChar(string, "0"), false, ch);
+    build_code(getRightNode(x), concatChar(string, "1"), true, ch);
 
     if(goToParent) string[(strlen(string) - 1)] = '\0';
 }
@@ -88,17 +81,17 @@ void writeTrie(Node x, FileStream fs){
      writeTrie(getRightNode(x), fs);
 }
 
-void writeText(FILE* input, FileStream fs){
-   int ch =  getc(input);
+void writeText(FILE* input, FileStream fs, CodeHuffman ch){
+   int c =  getc(input);
 
-    while(ch != EOF){
-       char* code_binary = getContentTabel(tabel[ch]);
+    while(c != EOF){
+       char* code_binary = getContentTabel(getTabel(ch, c));
 
        for(int j = 0; j < strlen(code_binary); j++){
            if(code_binary[j] == '0') writeBit(fs, false);
            else if(code_binary[j] == '1') writeBit(fs, true);
        }
-       ch = getc(input);
+       c = getc(input);
    }
 }
 
@@ -122,33 +115,28 @@ void huffman_compress(char* input, char* output){
 
     rewind(file_input);
 
-    count_freq(file_input);
+    CodeHuffman ch = newCodeHuffman();
 
-    PriorityQueue pq = build_priority_queue();
+    count_freq(ch, file_input);
+
+    PriorityQueue pq = build_priority_queue(ch);
 
     Node parent = build_trie(pq);
 
     deletePriorityQueue(pq);
 
     char a[100];
-    build_code(parent, a, false);
+    a[0] = '\0';
+    build_code(parent, a, false, ch);
 
     FileStream fs = create_or_open_file(output, "wb");
 
     writeTrie(parent, fs);
-    writeInt(fs, nodesfreqValid);
+    writeInt(fs, getNodeFreqValid(ch));
 
     rewind(file_input);
-    writeText(file_input, fs);
+    writeText(file_input, fs, ch);
 
     close_file(fs, "wb");
     fclose(file_input);
 }
-
-int main(){
-    huffman_compress("The_Bible.txt", "text_arithmetic_big.dat");
-    return 0;
-}
-
-
-

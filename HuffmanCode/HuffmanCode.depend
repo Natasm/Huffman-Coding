@@ -70,7 +70,7 @@
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\priorityqueue.h
 
-1592662679 source:c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.c
+1592939615 source:c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -80,6 +80,7 @@
 	"NodeFreq.h"
 	"Tabel.h"
 	"File.h"
+	"HuffmanConfig.h"
 
 1592661872 c:\users\natandemorais\huffman-coding\huffmancode\file.h
 	<stdbool.h>
@@ -90,9 +91,29 @@
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\nodefreq.h
 
-1592582211 source:c:\users\natandemorais\huffman-coding\huffmancode\tabel.c
+1592938112 source:c:\users\natandemorais\huffman-coding\huffmancode\tabel.c
 	<stdlib.h>
 	"Tabel.h"
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\tabel.h
+
+1592924520 source:c:\users\natandemorais\huffman-coding\huffmancode\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<dirent.h>
+	<string.h>
+	"code_huffman.h"
+
+1592927310 c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.h
+
+1592939562 source:c:\users\natandemorais\huffman-coding\huffmancode\huffmanconfig.c
+	<stdlib.h>
+	"HuffmanConfig.h"
+	"NodeFreq.h"
+	"Tabel.h"
+
+1592935227 c:\users\natandemorais\huffman-coding\huffmancode\huffmanconfig.h
+	"NodeFreq.h"
+	"Tabel.h"
 
