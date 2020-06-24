@@ -9,11 +9,11 @@ CodeHuffman newCodeHuffman();
 
 int getNodeFreqValid(CodeHuffman ch);
 
-void insertNodeFreq(CodeHuffman ch, char c);
+void insertNodeFreq(CodeHuffman ch, int c);
 
 NodeFreq getNodeFreq(CodeHuffman ch, int i);
 
-void insertTabel(CodeHuffman ch, char key, char* content);
+void insertTabel(CodeHuffman ch, int key, char* content);
 
 Tabel getTabel(CodeHuffman ch, int i);
 

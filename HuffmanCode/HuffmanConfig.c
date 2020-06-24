@@ -25,7 +25,7 @@ int getNodeFreqValid(CodeHuffman ch){
     return soma;
 }
 
-void insertNodeFreq(CodeHuffman ch, char c){
+void insertNodeFreq(CodeHuffman ch, int c){
     if(ch->nodesfreq[c] == NULL) {
         ch->nodesfreq[c] = newNodeFreq(c, 1);
     }
@@ -34,7 +34,7 @@ void insertNodeFreq(CodeHuffman ch, char c){
 
 NodeFreq getNodeFreq(CodeHuffman ch, int i) { return ch->nodesfreq[i]; }
 
-void insertTabel(CodeHuffman ch, char key, char* content){
+void insertTabel(CodeHuffman ch, int key, char* content){
     if(ch->tabel[key] == NULL) ch->tabel[key] = newTabel(key, content);
 }
 

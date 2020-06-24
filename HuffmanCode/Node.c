@@ -19,7 +19,11 @@ Node newNode(char c, int freq, Node left, Node right){
 Node newNodeJoin(Node left, Node right){
     Node createNode = (Node) malloc(sizeof(struct node));
     createNode->ch = '+';
-    createNode->freq = left->freq + right->freq;
+
+    if(left != NULL && right != NULL) createNode->freq = left->freq + right->freq;
+    else if (left != NULL) createNode->freq = left->freq;
+    else createNode->freq = right->freq;
+
     createNode->left = left;
     createNode->right = right;
     return createNode;

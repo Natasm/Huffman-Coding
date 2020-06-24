@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <locale.h>
 #include "Node.h"
 #include "PriorityQueue.h"
 #include "NodeFreq.h"
@@ -56,6 +57,8 @@ char* concatChar(char* c1, char* c2){
 }
 
 void build_code(Node x, char* string, int goToParent, CodeHuffman ch){
+    if(x == NULL) return;
+
     if(isLeaf(x)){
         char key = getKeyNode(x);
         insertTabel(ch, key, string);
@@ -71,6 +74,8 @@ void build_code(Node x, char* string, int goToParent, CodeHuffman ch){
 }
 
 void writeTrie(Node x, FileStream fs){
+     if(x == NULL) return;
+
      if(isLeaf(x)){
         writeBit(fs, true);
         writeChar(fs, getKeyNode(x));
@@ -96,6 +101,8 @@ void writeText(FILE* input, FileStream fs, CodeHuffman ch){
 }
 
 void print_code(Node x, char* string, int goToParent){
+    if(x == NULL) return;
+
     if(isLeaf(x)){
         printf("%c - %s\n", getKeyNode(x), string);
         if(goToParent) string[(strlen(string) - 1) - 1] = '\0';
@@ -125,7 +132,7 @@ void huffman_compress(char* input, char* output){
 
     deletePriorityQueue(pq);
 
-    char a[100];
+    char a[1000];
     a[0] = '\0';
     build_code(parent, a, false, ch);
 

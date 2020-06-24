@@ -45,7 +45,7 @@
 
 1590790059 c:\users\natandemorais\desktop\algorithms\huffman code\huffmancode\file.h
 
-1592662493 source:c:\users\natandemorais\huffman-coding\huffmancode\file.c
+1592951461 source:c:\users\natandemorais\huffman-coding\huffmancode\file.c
 	<stdio.h>
 	<stdlib.h>
 	<stdbool.h>
@@ -58,7 +58,7 @@
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\linkedlist.h
 
-1592582211 source:c:\users\natandemorais\huffman-coding\huffmancode\node.c
+1592953330 source:c:\users\natandemorais\huffman-coding\huffmancode\node.c
 	<stdlib.h>
 	"Node.h"
 
@@ -70,11 +70,12 @@
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\priorityqueue.h
 
-1592939615 source:c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.c
+1592957174 source:c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
+	<locale.h>
 	"Node.h"
 	"PriorityQueue.h"
 	"NodeFreq.h"
@@ -97,7 +98,7 @@
 
 1592582211 c:\users\natandemorais\huffman-coding\huffmancode\tabel.h
 
-1592924520 source:c:\users\natandemorais\huffman-coding\huffmancode\main.c
+1592956172 source:c:\users\natandemorais\huffman-coding\huffmancode\main.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
@@ -107,13 +108,13 @@
 
 1592927310 c:\users\natandemorais\huffman-coding\huffmancode\code_huffman.h
 
-1592939562 source:c:\users\natandemorais\huffman-coding\huffmancode\huffmanconfig.c
+1592955572 source:c:\users\natandemorais\huffman-coding\huffmancode\huffmanconfig.c
 	<stdlib.h>
 	"HuffmanConfig.h"
 	"NodeFreq.h"
 	"Tabel.h"
 
-1592935227 c:\users\natandemorais\huffman-coding\huffmancode\huffmanconfig.h
+1592953056 c:\users\natandemorais\huffman-coding\huffmancode\huffmanconfig.h
 	"NodeFreq.h"
 	"Tabel.h"
 
